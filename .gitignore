@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Virtual environments
+.venv/
+.venv_test/
+venv/
+env/
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+*.tmp
+*.temp
+~$*
+tmp/
+temp/
+
+# Runtime uploads / generated transient artifacts
+uploads/
+upload_temp/
+runtime/
+*.db-journal
+*.sqlite-journal
+*.sqlite3-journal
+
+# Secrets / environment
+.env
+.env.*
+*.pem
+*.key
+
+# Python build
+build/
+dist/
+*.egg-info/
+
+# Never commit real sensitive data
+data/private/
+data/real/
+data/sensitive/

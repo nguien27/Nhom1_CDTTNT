@@ -1,0 +1,41 @@
+{
+  "MA_NHAN_VIEN": [
+    "Mã NV",
+    "MSNV",
+    "Mã nhân viên",
+    "Mã cán bộ",
+    "Employee ID",
+    "Staff Code",
+    "Employee Code"
+  ],
+  "HO_TEN": [
+    "Họ tên",
+    "Họ và tên",
+    "Tên nhân viên",
+    "Tên CBCNV",
+    "Full Name",
+    "Employee Name",
+    "Staff Name"
+  ],
+  "MA_DON_VI": [
+    "Mã đơn vị",
+    "Unit ID",
+    "Department Code",
+    "Organization Code"
+  ],
+  "TEN_DON_VI": [
+    "Đơn vị",
+    "Tên đơn vị",
+    "Phòng ban",
+    "Đơn vị công tác",
+    "Department",
+    "Organization",
+    "Unit Name"
+  ],
+  "LOAI_DON_VI": [
+    "Loại đơn vị",
+    "Loại tổ chức",
+    "Unit Type",
+    "Organization Type"
+  ]
+}

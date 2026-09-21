@@ -1,0 +1,212 @@
+{
+  "model": "TF-IDF char_wb(2,5) + LogisticRegression",
+  "model_params": {
+    "C": 4.0,
+    "class_weight": "balanced",
+    "max_iter": 3000
+  },
+  "tfidf_params": {
+    "analyzer": "char_wb",
+    "ngram_range": [
+      2,
+      5
+    ],
+    "max_features": 12000
+  },
+  "classes": [
+    "MA_NHAN_VIEN",
+    "HO_TEN",
+    "TEN_DON_VI",
+    "LOAI_DON_VI",
+    "OTHER"
+  ],
+  "train_date": "2026-09-15T12:19:14",
+  "dataset_size": 208,
+  "train_size": 165,
+  "test_size": 43,
+  "initial_threshold": 0.7,
+  "threshold": 0.4,
+  "threshold_source": "validation_set",
+  "confidence_test": {
+    "min": 0.3895,
+    "median": 0.696,
+    "mean": 0.6927,
+    "max": 0.9146,
+    "accepted_at_threshold": 42,
+    "test_size": 43
+  },
+  "metrics_test": {
+    "accuracy": 0.907,
+    "precision_macro": 0.8929,
+    "recall_macro": 0.8929,
+    "macro_f1": 0.8929,
+    "precision_weighted": 0.907,
+    "recall_weighted": 0.907,
+    "weighted_f1": 0.907
+  },
+  "classification_report_test": {
+    "MA_NHAN_VIEN": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 8.0
+    },
+    "HO_TEN": {
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1-score": 0.75,
+      "support": 8.0
+    },
+    "TEN_DON_VI": {
+      "precision": 0.7142857142857143,
+      "recall": 0.7142857142857143,
+      "f1-score": 0.7142857142857143,
+      "support": 7.0
+    },
+    "LOAI_DON_VI": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 8.0
+    },
+    "OTHER": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "accuracy": 0.9069767441860465,
+    "macro avg": {
+      "precision": 0.8928571428571429,
+      "recall": 0.8928571428571429,
+      "f1-score": 0.8928571428571429,
+      "support": 43.0
+    },
+    "weighted avg": {
+      "precision": 0.9069767441860465,
+      "recall": 0.9069767441860465,
+      "f1-score": 0.9069767441860465,
+      "support": 43.0
+    }
+  },
+  "confusion_matrix_test": [
+    [
+      8,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      6,
+      2,
+      0,
+      0
+    ],
+    [
+      0,
+      2,
+      5,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      8,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      12
+    ]
+  ],
+  "labels_confusion_matrix": [
+    "MA_NHAN_VIEN",
+    "HO_TEN",
+    "TEN_DON_VI",
+    "LOAI_DON_VI",
+    "OTHER"
+  ],
+  "threshold_tuning": [
+    {
+      "threshold": 0.3,
+      "coverage": 1.0,
+      "accepted_accuracy": 0.9512,
+      "accepted_count": 41
+    },
+    {
+      "threshold": 0.35,
+      "coverage": 0.9512,
+      "accepted_accuracy": 0.9487,
+      "accepted_count": 39
+    },
+    {
+      "threshold": 0.4,
+      "coverage": 0.8049,
+      "accepted_accuracy": 1.0,
+      "accepted_count": 33
+    },
+    {
+      "threshold": 0.45,
+      "coverage": 0.8049,
+      "accepted_accuracy": 1.0,
+      "accepted_count": 33
+    },
+    {
+      "threshold": 0.5,
+      "coverage": 0.7805,
+      "accepted_accuracy": 1.0,
+      "accepted_count": 32
+    },
+    {
+      "threshold": 0.55,
+      "coverage": 0.6829,
+      "accepted_accuracy": 1.0,
+      "accepted_count": 28
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.561,
+      "accepted_accuracy": 1.0,
+      "accepted_count": 23
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.4146,
+      "accepted_accuracy": 1.0,
+      "accepted_count": 17
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.3415,
+      "accepted_accuracy": 1.0,
+      "accepted_count": 14
+    },
+    {
+      "threshold": 0.75,
+      "coverage": 0.2195,
+      "accepted_accuracy": 1.0,
+      "accepted_count": 9
+    },
+    {
+      "threshold": 0.8,
+      "coverage": 0.2195,
+      "accepted_accuracy": 1.0,
+      "accepted_count": 9
+    },
+    {
+      "threshold": 0.85,
+      "coverage": 0.0732,
+      "accepted_accuracy": 1.0,
+      "accepted_count": 3
+    }
+  ],
+  "split": "StratifiedGroupKFold; group_key=preprocess_no_accent(text)",
+  "version": "2.0"
+}

@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PayrollCheck — Hệ thống Tra cứu Chi trả Lương Doanh nghiệp & Tổ chức</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-layout">
+    <!-- ========================================== -->
+    <!-- 1. FIXED LEFT SIDEBAR                      -->
+    <!-- ========================================== -->
+    <aside class="app-sidebar" id="app-sidebar">
+        <!-- Logo & Branding -->
+        <div class="sidebar-brand">
+            <div class="brand-emblem">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="m9 12 2 2 4-4"/>
+                </svg>
+            </div>
+            <div class="brand-text">
+                <div class="brand-name">PayrollCheck</div>
+                <div class="brand-sub">Payroll Eligibility System</div>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">NGHIỆP VỤ CHÍNH</div>
+            <button class="nav-item active" data-view="dashboard" onclick="navigateTo('dashboard')">
+                <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                <span>Tổng quan</span>
+            </button>
+            <button class="nav-item" data-view="search" onclick="navigateTo('search')">
+                <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <span>Tra cứu đối tượng</span>
+            </button>
+            <button class="nav-item" data-view="employees" onclick="navigateTo('employees')">
+                <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Cá nhân (Nhân sự)</span>
+            </button>
+            <button class="nav-item" data-view="units" onclick="navigateTo('units')">
+                <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M16 14h.01"/></svg>
+                <span>Đơn vị tổ chức</span>
+            </button>
+
+            <div class="nav-section-label admin-only">QUẢN TRỊ & DỮ LIỆU</div>
+            <button class="nav-item admin-only" data-view="upload" onclick="navigateTo('upload')">
+                <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                <span>Nhập dữ liệu (Import)</span>
+            </button>
+            <button class="nav-item admin-only" data-view="database" onclick="navigateTo('database')">
+                <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                <span>Cơ sở dữ liệu</span>
+            </button>
+            <button class="nav-item admin-only" data-view="rules" onclick="navigateTo('rules')">
+                <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+                <span>Quy tắc nghiệp vụ</span>
+            </button>
+            <button class="nav-item admin-only" data-view="exceptions" onclick="navigateTo('exceptions')">
+                <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+                <span>Ngoại lệ cá nhân</span>
+            </button>
+
+            <div class="nav-section-label">AUDIT & CẤU HÌNH</div>
+            <button class="nav-item" data-view="history" onclick="navigateTo('history')">
+                <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+                <span>Lịch sử tra cứu</span>
+            </button>
+            <button class="nav-item" data-view="system" onclick="navigateTo('system')">
+                <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>Hệ thống & Mạng LAN</span>
+            </button>
+        </nav>
+
+        <!-- Bottom Sidebar Status & Role Switcher -->
+        <div class="sidebar-footer">
+            <div class="role-selector-card">
+                <div class="role-header">
+                    <span>Vai trò hiển thị:</span>
+                    <span id="role-badge" class="badge-role admin">ADMIN</span>
+                </div>
+                <select id="user-role-select" onchange="toggleUserRole(this.value)">
+                    <option value="ADMIN" selected>Quản trị viên (ADMIN)</option>
+                    <option value="USER">Chuyên viên tra cứu (USER)</option>
+                </select>
+            </div>
+            <div class="connection-indicators">
+                <div class="conn-item"><span class="conn-dot online"></span> Database: SQLite Connected</div>
+                <div class="conn-item"><span class="conn-dot online"></span> Server: FastAPI Online</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ========================================== -->
+    <!-- 2. MAIN CONTENT AREA                       -->
+    <!-- ========================================== -->
+    <div class="app-main">
+        <!-- Top App Bar -->
+        <header class="app-topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
+                <div class="breadcrumb" id="app-breadcrumb">
+                    <span class="crumb-root">PayrollCheck</span>
+                    <span class="crumb-separator">/</span>
+                    <span class="crumb-active" id="current-breadcrumb">Tổng quan</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="system-status-pills">
+                    <span class="status-chip ready"><span class="dot"></span> Search: Ready</span>
+                    <span class="status-chip active"><span class="dot"></span> Rule Engine: Active</span>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <div class="user-info">
+                        <div class="user-name">Quản trị viên</div>
+                        <div class="user-dept">Phòng Tổ chức & Nhân sự</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Global Alert / Toast Notification -->
+        <div id="global-alert" class="global-alert hidden">
+            <span id="alert-icon" class="alert-icon">ℹ️</span>
+            <span id="alert-message" class="alert-message"></span>
+            <button class="alert-close" onclick="closeAlert()">✕</button>
+        </div>
+
+        <!-- MOCK BUSINESS RULES WARNING BANNER (Luôn hiển thị rõ ràng) -->
+        <div class="mock-rules-banner" id="mock-rules-banner">
+            <div class="mock-banner-content">
+                <span class="mock-banner-icon">⚠️</span>
+                <div>
+                    <strong>LƯU Ý NGHIỆP VỤ QUAN TRỌNG:</strong>
+                    Hệ thống đang sử dụng bộ quy tắc nghiệp vụ mô phỏng (Mock Business Rules) phục vụ mục đích kiểm thử và demo.
+                    Các kết quả chi trả hoàn toàn dựa trên quy tắc logic của Rule Engine, <em>không phải kết luận pháp lý chính thức</em>.
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Container for Views -->
+        <main class="content-body">
+
+            <!-- ========================================== -->
+            <!-- VIEW 1: DASHBOARD TỔNG QUAN                -->
+            <!-- ========================================== -->
+            <section id="view-dashboard" class="page-view active">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Xin chào, Quản trị viên</h1>
+                        <p class="page-subtitle">Kiểm tra nhanh cá nhân hoặc đơn vị dựa trên dữ liệu chuẩn hóa và quy tắc nghiệp vụ Rule Engine.</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-outline" onclick="navigateTo('upload')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                            Nhập dữ liệu
+                        </button>
+                        <button class="btn btn-primary" onclick="navigateTo('search')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            + Tra cứu mới
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Statistics Cards (4-5 cards chuẩn SaaS) -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Tổng số cá nhân</span>
+                            <div class="stat-icon-wrap blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                        </div>
+                        <div class="stat-value" id="dash-stat-nv">--</div>
+                        <div class="stat-footer"><span class="stat-trend positive">↑ Chuẩn hóa</span> Dữ liệu nhân viên SQLite</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Tổng số đơn vị</span>
+                            <div class="stat-icon-wrap purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/></svg></div>
+                        </div>
+                        <div class="stat-value" id="dash-stat-dv">--</div>
+                        <div class="stat-footer"><span class="stat-trend neutral">🏢 Cơ cấu</span> Phòng ban & tổ chức</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Được trả lương (YES)</span>
+                            <div class="stat-icon-wrap green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        </div>
+                        <div class="stat-value text-green" id="dash-stat-yes">--</div>
+                        <div class="stat-footer"><span class="stat-trend positive">Đủ điều kiện</span> Theo quy tắc hiện hành</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Không được trả lương (NO)</span>
+                            <div class="stat-icon-wrap red"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg></div>
+                        </div>
+                        <div class="stat-value text-red" id="dash-stat-no">--</div>
+                        <div class="stat-footer"><span class="stat-trend negative">Không áp dụng</span> Tạm hoãn hoặc loại trừ</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Chưa xác định</span>
+                            <div class="stat-icon-wrap amber"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg></div>
+                        </div>
+                        <div class="stat-value text-amber" id="dash-stat-undef">--</div>
+                        <div class="stat-footer"><span class="stat-trend warning">Cần bổ sung</span> Chưa có rule hoặc thiếu dữ liệu</div>
+                    </div>
+                </div>
+
+                <!-- Quick Search Hero Area -->
+                <div class="quick-search-card">
+                    <div class="quick-search-header">
+                        <h2>Tra cứu nhanh tình trạng trả lương</h2>
+                        <p>Nhập MSNV, họ tên nhân viên hoặc tên đơn vị để kiểm tra đối tượng có thuộc diện được chi trả hay không.</p>
+                    </div>
+                    <div class="quick-search-input-group">
+                        <div class="search-filter-select">
+                            <select id="quick-search-scope">
+                                <option value="ALL">Tất cả đối tượng</option>
+                                <option value="CA_NHAN">Cá nhân</option>
+                                <option value="DON_VI">Đơn vị</option>
+                            </select>
+                        </div>
+                        <div class="quick-search-field">
+                            <svg class="search-field-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            <input type="text" id="dashboard-quick-input" placeholder="Nhập MSNV (ví dụ NV001), Họ tên (Nguyễn Văn...), hoặc Tên đơn vị..." onkeydown="if(event.key==='Enter') triggerDashboardSearch()">
+                        </div>
+                        <button class="btn btn-primary btn-search-hero" onclick="triggerDashboardSearch()">
+                            Tra cứu ngay
+                        </button>
+                    </div>
+                    <div class="quick-search-chips">
+                        <span class="chip-label">Gợi ý tra cứu:</span>
+                        <button class="chip" onclick="quickFillAndSearch('NV001')">NV001</button>
+                        <button class="chip" onclick="quickFillAndSearch('Nguyễn Văn An')">Nguyễn Văn An</button>
+                        <button class="chip" onclick="quickFillAndSearch('Sở Thông tin và Truyền thông')">Sở Thông tin và Truyền thông</button>
+                        <button class="chip" onclick="quickFillAndSearch('Phòng Phát triển Phần mềm AI')">Phòng Phát triển Phần mềm AI</button>
+                    </div>
+                </div>
+
+                <!-- Recent Searches Table -->
+                <div class="dashboard-table-card">
+                    <div class="card-header-flex">
+                        <div>
+                            <h3>Tra cứu gần đây (Recent Searches)</h3>
+                            <p class="card-header-sub">Nhật ký các lượt tra cứu gần nhất trong phiên làm việc.</p>
+                        </div>
+                        <button class="btn btn-sm btn-outline" onclick="loadRecentSearches()">Làm mới</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="saas-table" id="recent-searches-table">
+                            <thead>
+                                <tr>
+                                    <th>Query ID</th>
+                                    <th>Đối tượng</th>
+                                    <th>Loại</th>
+                                    <th>Từ khóa</th>
+                                    <th>Trạng thái chi trả</th>
+                                    <th>Quy tắc áp dụng</th>
+                                    <th>Thời gian</th>
+                                    <th>Người thực hiện</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-searches-body">
+                                <tr>
+                                    <td colspan="9" class="text-center text-muted py-4">Đang tải lịch sử tra cứu...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 2: TRA CỨU ĐỐI TƯỢNG (CHÍNH)          -->
+            <!-- ========================================== -->
+            <section id="view-search" class="page-view hidden">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Tra cứu Đối tượng & Kiểm tra Điều kiện</h1>
+                        <p class="page-subtitle">Tìm kiếm cá nhân hoặc đơn vị dựa trên dữ liệu đã chuẩn hóa và phân giải theo Rule Engine.</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-outline" onclick="handleExport('csv')">
+                            📥 Xuất CSV
+                        </button>
+                        <button class="btn btn-outline" onclick="handleExport('xlsx')">
+                            📊 Xuất Excel (XLSX)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Advanced Search Card -->
+                <div class="search-control-card">
+                    <div class="search-tabs">
+                        <button class="search-tab-btn active" id="stab-all" onclick="setSearchFilter('ALL')">Tất cả đối tượng</button>
+                        <button class="search-tab-btn" id="stab-canhan" onclick="setSearchFilter('CA_NHAN')">👤 Cá nhân (Nhân viên)</button>
+                        <button class="search-tab-btn" id="stab-donvi" onclick="setSearchFilter('DON_VI')">🏛️ Đơn vị tổ chức</button>
+                    </div>
+
+                    <div class="search-inputs-grid">
+                        <div class="input-block">
+                            <label for="main-search-input">Từ khóa tìm kiếm (MSNV / Họ tên / Tên đơn vị):</label>
+                            <div class="input-with-icon">
+                                <svg class="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                                <input type="text" id="main-search-input" placeholder="Nhập từ khóa cần tra cứu..." onkeydown="if(event.key==='Enter') doSearchNow(1)">
+                            </div>
+                        </div>
+
+                        <div class="input-block">
+                            <label for="search-method-select">Phương thức tìm kiếm:</label>
+                            <select id="search-method-select">
+                                <option value="AUTO" selected>Tự động tối ưu (Exact + Token + Fuzzy)</option>
+                                <option value="EXACT">Khớp chính xác (Exact Match)</option>
+                                <option value="PARTIAL">Khớp từng phần (Partial Match)</option>
+                                <option value="FUZZY">Tìm kiếm gần đúng (Fuzzy Search)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="search-options-row">
+                        <div class="checkbox-group">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" id="chk-accent-insensitive" checked>
+                                <span class="checkmark"></span>
+                                Tìm kiếm không dấu tiếng Việt (Accent-insensitive)
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox" id="chk-fuzzy" checked>
+                                <span class="checkmark"></span>
+                                Xếp hạng độ tương đồng thông minh (Ranking)
+                            </label>
+                        </div>
+                        <div class="search-actions">
+                            <button class="btn btn-primary" onclick="doSearchNow(1)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                                Tra cứu kết quả
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two-Column Master-Detail Layout -->
+                <div class="checker-layout">
+                    <!-- Left: Search Results List -->
+                    <div class="checker-results-col">
+                        <div class="results-toolbar">
+                            <div class="results-count-title">
+                                <span id="search-results-total">0</span> kết quả phù hợp
+                            </div>
+                            <div class="results-sort">
+                                <span>Sắp xếp:</span>
+                                <select id="search-sort-select">
+                                    <option value="score">Độ phù hợp cao nhất</option>
+                                    <option value="name">Theo tên A - Z</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Ambiguity Banner (khi có nhiều kết quả) -->
+                        <div id="ambiguity-alert" class="ambiguity-alert hidden">
+                            <span class="ambiguity-icon">ℹ️</span>
+                            <span>Có nhiều kết quả phù hợp. Vui lòng chọn một đối tượng cụ thể từ danh sách bên dưới để xem chi tiết và căn cứ nghiệp vụ.</span>
+                        </div>
+
+                        <!-- Results List Container -->
+                        <div class="results-cards-list" id="search-results-container">
+                            <div class="empty-state-card">
+                                <div class="empty-icon">🔍</div>
+                                <h3>Sẵn sàng tra cứu</h3>
+                                <p>Nhập từ khóa ở ô tìm kiếm phía trên để bắt đầu tra cứu thông tin đối tượng.</p>
+                            </div>
+                        </div>
+
+                        <!-- Pagination Panel -->
+                        <div class="pagination-bar hidden" id="search-pagination-bar">
+                            <button class="btn btn-sm btn-outline" id="btn-prev-page" onclick="goToPage(-1)">‹ Trang trước</button>
+                            <span class="pagination-text" id="pagination-info">Trang 1 / 1</span>
+                            <button class="btn btn-sm btn-outline" id="btn-next-page" onclick="goToPage(1)">Trang sau ›</button>
+                            <button class="btn btn-sm btn-secondary" id="btn-load-more" onclick="appendNextPage()">+ Tải thêm 20 kết quả</button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Sticky Detailed Inspection Pane -->
+                    <div class="checker-detail-col">
+                        <div class="sticky-detail-container" id="detail-pane-container">
+                            <div class="empty-state-card">
+                                <div class="empty-icon">📋</div>
+                                <h3>Chi tiết đối tượng & Trạng thái</h3>
+                                <p>Chọn một kết quả bên danh sách để xem hồ sơ, quy tắc áp dụng và căn cứ chi trả lương minh bạch.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 3: CÁ NHÂN (NHÂN SỰ)                  -->
+            <!-- ========================================== -->
+            <section id="view-employees" class="page-view hidden">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Danh sách Cá nhân (Nhân sự)</h1>
+                        <p class="page-subtitle">Quản lý và tra cứu toàn bộ nhân sự chuẩn hóa trong cơ sở dữ liệu SQLite.</p>
+                    </div>
+                    <div class="page-actions">
+                        <input type="text" id="filter-emp-input" class="table-search-input" placeholder="Lọc theo MSNV, họ tên..." oninput="debounceEmployeeFilter(this.value)">
+                    </div>
+                </div>
+                <div class="card table-card">
+                    <div class="table-responsive">
+                        <table class="saas-table" id="employees-table">
+                            <thead>
+                                <tr>
+                                    <th>MSNV</th>
+                                    <th>Họ và tên</th>
+                                    <th>Đơn vị công tác</th>
+                                    <th>Chức vụ</th>
+                                    <th>Email</th>
+                                    <th>Trạng thái chi trả</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employees-table-body">
+                                <tr><td colspan="7" class="text-center py-4">Đang tải dữ liệu nhân viên...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-footer-pagination" id="employees-pagination"></div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 4: ĐƠN VỊ TỔ CHỨC                     -->
+            <!-- ========================================== -->
+            <section id="view-units" class="page-view hidden">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Danh mục Đơn vị Tổ chức</h1>
+                        <p class="page-subtitle">Danh sách các phòng ban, trung tâm, cơ quan và tình trạng áp dụng chính sách chi trả.</p>
+                    </div>
+                    <div class="page-actions">
+                        <input type="text" id="filter-unit-input" class="table-search-input" placeholder="Tìm theo tên đơn vị..." oninput="debounceUnitFilter(this.value)">
+                    </div>
+                </div>
+                <div class="card table-card">
+                    <div class="table-responsive">
+                        <table class="saas-table" id="units-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn vị</th>
+                                    <th>Tên đơn vị</th>
+                                    <th>Phân loại đơn vị</th>
+                                    <th>Đơn vị cấp trên</th>
+                                    <th>Số nhân viên</th>
+                                    <th>Trạng thái chi trả</th>
+                                    <th>Quy tắc áp dụng</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="units-table-body">
+                                <tr><td colspan="8" class="text-center py-4">Đang tải danh sách đơn vị...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 5: NHẬP DỮ LIỆU (IMPORT PIPELINE)    -->
+            <!-- ========================================== -->
+            <section id="view-upload" class="page-view hidden">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Nhập Dữ liệu Hệ thống (Data Import Pipeline)</h1>
+                        <p class="page-subtitle">Pipeline tự động trích xuất thông tin, nhận diện ý nghĩa cột qua AI Schema Mapping và ghi vào SQLite an toàn.</p>
+                    </div>
+                </div>
+
+                <!-- 7-Step Pipeline Progress Indicator -->
+                <div class="pipeline-stepper">
+                    <div class="step-node active" id="step-1"><span class="step-num">1</span> File Reader</div>
+                    <div class="step-arrow">→</div>
+                    <div class="step-node" id="step-2"><span class="step-num">2</span> OCR (Scan/Text)</div>
+                    <div class="step-arrow">→</div>
+                    <div class="step-node" id="step-3"><span class="step-num">3</span> Info Extraction</div>
+                    <div class="step-arrow">→</div>
+                    <div class="step-node" id="step-4"><span class="step-num">4</span> AI Schema Mapping</div>
+                    <div class="step-arrow">→</div>
+                    <div class="step-node" id="step-5"><span class="step-num">5</span> Normalization</div>
+                    <div class="step-arrow">→</div>
+                    <div class="step-node" id="step-6"><span class="step-num">6</span> Validation</div>
+                    <div class="step-arrow">→</div>
+                    <div class="step-node" id="step-7"><span class="step-num">7</span> SQLite Commit</div>
+                </div>
+
+                <!-- Upload Form Grid -->
+                <div class="card upload-card">
+                    <form id="pipeline-upload-form" onsubmit="handlePipelineCommit(event)">
+                        <div class="upload-controls-grid">
+                            <!-- Drag & Drop File Zone -->
+                            <div class="form-group-full">
+                                <label>1. Tệp dữ liệu đầu vào (Hỗ trợ CSV, XLSX, DOCX, PDF Text, PDF Scan):</label>
+                                <div class="drop-zone" id="drop-zone">
+                                    <input type="file" id="pipeline-file-input" accept=".csv,.xlsx,.docx,.pdf" onchange="onPipelineFileChange(this)">
+                                    <div class="drop-zone-icon">📁</div>
+                                    <div class="drop-zone-title" id="drop-zone-filename">Kéo thả tệp vào đây hoặc bấm để chọn tệp từ máy tính</div>
+                                    <div class="drop-zone-hint">Định dạng hỗ trợ: .csv, .xlsx, .docx, .pdf (văn bản & bản quét)</div>
+                                </div>
+                            </div>
+
+                            <!-- Data Type Selector -->
+                            <div class="form-group">
+                                <label for="pipeline-data-type">2. Loại dữ liệu nạp vào:</label>
+                                <select id="pipeline-data-type">
+                                    <option value="NHAN_VIEN_KHONG_KET_QUA" selected>Nhân viên không có kết quả (Chỉ lưu hồ sơ)</option>
+                                    <option value="NHAN_VIEN_CO_KET_QUA">Nhân viên kèm kết quả (Tự động bóc tách ngoại lệ cá nhân)</option>
+                                    <option value="DON_VI">Metadata Đơn vị tổ chức</option>
+                                    <option value="BUSINESS_RULE">Bộ Quy tắc Chi trả Lương (Chỉ YES / NO)</option>
+                                </select>
+                            </div>
+
+                            <!-- Upload Mode Selector -->
+                            <div class="form-group">
+                                <label for="pipeline-upload-mode">3. Chế độ nạp (Upload Mode):</label>
+                                <select id="pipeline-upload-mode">
+                                    <option value="APPEND" selected>APPEND: Chỉ thêm mới (Bản ghi trùng sẽ bỏ qua)</option>
+                                    <option value="UPSERT">UPSERT: Thêm mới và cập nhật bản ghi đã tồn tại</option>
+                                    <option value="REPLACE">REPLACE: Thay thế toàn bộ dữ liệu của loại này</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="upload-action-buttons">
+                            <button type="button" class="btn btn-secondary" id="btn-pipeline-preview" onclick="handlePipelinePreview()">
+                                🔍 Bước 1: Xem trước & Phân tích Schema Mapping
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="btn-pipeline-commit" disabled>
+                                💾 Bước 2: Xác nhận ghi SQLite (Transaction Safe)
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Preview & Mapping Screen (Ẩn cho tới khi bấm Preview) -->
+                <div class="card preview-analysis-card hidden" id="pipeline-preview-card">
+                    <div class="card-header-flex">
+                        <div>
+                            <h3>Xác định Cấu trúc Dữ liệu & AI Schema Mapping</h3>
+                            <p class="card-header-sub">Hệ thống AI tự động đối chiếu các cột nguồn với Schema chuẩn. Người dùng có thể kiểm tra và chỉnh sửa trước khi commit.</p>
+                        </div>
+                        <div id="pipeline-validation-pill" class="badge-status-lg pending">Chờ kiểm tra</div>
+                    </div>
+
+                    <!-- AI Transparency Notice -->
+                    <div class="ai-transparency-box">
+                        <span class="ai-box-icon">🤖</span>
+                        <div>
+                            <strong>AI-Assisted Mapping (Độ tin cậy tổng thể: <span id="overall-confidence">98%</span>):</strong>
+                            AI chỉ hỗ trợ nhận diện và chuẩn hóa tên cột dữ liệu từ tệp nguồn. AI <em>tuyệt đối không can thiệp hay dự đoán</em> kết quả chi trả lương.
+                        </div>
+                    </div>
+
+                    <!-- Validation Summary Box -->
+                    <div id="pipeline-validation-report" class="validation-report-box"></div>
+
+                    <!-- Mapping Table -->
+                    <div class="table-responsive" style="margin-top: 16px;">
+                        <table class="saas-table">
+                            <thead>
+                                <tr>
+                                    <th>Cột trong tệp nguồn (Raw Column)</th>
+                                    <th>Trường chuẩn hệ thống (Standard Schema)</th>
+                                    <th>Độ tin cậy (Confidence)</th>
+                                    <th>Phương thức nhận diện</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pipeline-mapping-tbody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Sample Data Preview -->
+                    <div style="margin-top: 24px;">
+                        <h4>Dữ liệu mẫu trích xuất (5 dòng đầu tiên)</h4>
+                        <div class="table-responsive" style="margin-top: 10px;">
+                            <table class="saas-table" id="pipeline-sample-table">
+                                <thead id="pipeline-sample-thead"></thead>
+                                <tbody id="pipeline-sample-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 6: CƠ SỞ DỮ LIỆU (DATABASE EXPLORER)  -->
+            <!-- ========================================== -->
+            <section id="view-database" class="page-view hidden">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Quản trị Cơ sở Dữ liệu (Database Explorer)</h1>
+                        <p class="page-subtitle">Xem cấu trúc bảng, số lượng bản ghi và trạng thái kết nối SQLite trực tiếp.</p>
+                    </div>
+                </div>
+
+                <div class="db-status-bar card">
+                    <div class="db-stat-item">
+                        <span class="db-stat-label">Cơ sở dữ liệu:</span>
+                        <span class="db-stat-val">SQLite 3 (ACID Transaction)</span>
+                    </div>
+                    <div class="db-stat-item">
+                        <span class="db-stat-label">Trạng thái:</span>
+                        <span class="status-chip ready"><span class="dot"></span> Connected</span>
+                    </div>
+                    <div class="db-stat-item">
+                        <span class="db-stat-label">Dung lượng tệp DB:</span>
+                        <span class="db-stat-val" id="db-size-val">-- KB</span>
+                    </div>
+                    <div class="db-stat-item">
+                        <span class="db-stat-label">Schema Version:</span>
+                        <span class="db-stat-val">v1.0 (Clean Architecture)</span>
+                    </div>
+                </div>
+
+                <div class="card table-card" style="margin-top: 20px;">
+                    <div class="db-tabs">
+                        <button class="db-tab-btn active" onclick="switchDbTab('nhan_vien')">📋 Bảng nhan_vien</button>
+                        <button class="db-tab-btn" onclick="switchDbTab('business_rule')">⚖️ Bảng business_rule</button>
+                        <button class="db-tab-btn" onclick="switchDbTab('ngoai_le_ca_nhan')">⚡ Bảng ngoai_le_ca_nhan</button>
+                        <button class="db-tab-btn" onclick="switchDbTab('don_vi_nguon')">🏢 Bảng don_vi_nguon</button>
+                    </div>
+                    <div id="db-tab-content" style="padding: 16px;">
+                        <p class="text-muted">Đang tải dữ liệu bảng...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 7: QUY TẮC NGHIỆP VỤ (RULE ENGINE)    -->
+            <!-- ========================================== -->
+            <section id="view-rules" class="page-view hidden">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Quản lý Quy tắc Nghiệp vụ (Business Rules)</h1>
+                        <p class="page-subtitle">Danh mục các quy tắc do Rule Engine thực thi để phân giải tình trạng chi trả lương (YES / NO).</p>
+                    </div>
+                </div>
+
+                <!-- Mock Rules Banner -->
+                <div class="mock-rules-banner">
+                    <div class="mock-banner-content">
+                        <span class="mock-banner-icon">⚖️</span>
+                        <div>
+                            <strong>BỘ QUY TẮC NGHIỆP VỤ GIẢ LẬP (MOCK RULES):</strong>
+                            Các quy tắc dưới đây được thiết lập nhằm mục đích demo phân giải logic và kiểm thử hệ thống.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card table-card" style="margin-top: 20px;">
+                    <div class="table-responsive">
+                        <table class="saas-table" id="rules-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã quy tắc</th>
+                                    <th>Tên quy tắc</th>
+                                    <th>Phạm vi</th>
+                                    <th>Tên đơn vị áp dụng</th>
+                                    <th>Loại đơn vị</th>
+                                    <th>Kết quả</th>
+                                    <th>Mức ưu tiên</th>
+                                    <th>Căn cứ pháp lý / nghiệp vụ</th>
+                                    <th>Loại quy tắc</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rules-table-body">
+                                <tr><td colspan="10" class="text-center py-4">Đang tải danh mục quy tắc...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 8: NGOẠI LỆ CÁ NHÂN (EXCEPTIONS)      -->
+            <!-- ========================================== -->
+            <section id="view-exceptions" class="page-view hidden">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Ngoại lệ Cá nhân (Individual Overrides)</h1>
+                        <p class="page-subtitle">Danh sách cá nhân có quyết định chi trả riêng biệt, được ưu tiên cao hơn quy tắc đơn vị.</p>
+                    </div>
+                </div>
+
+                <div class="priority-notice-card">
+                    <span class="notice-icon">⚡</span>
+                    <div>
+                        <strong>NGUYÊN TẮC ƯU TIÊN:</strong>
+                        Nếu một nhân viên có bản ghi trong bảng <code>ngoai_le_ca_nhan</code> đang áp dụng, Rule Engine sẽ ưu tiên sử dụng kết quả này thay vì quy tắc chung của đơn vị.
+                    </div>
+                </div>
+
+                <div class="card table-card" style="margin-top: 20px;">
+                    <div class="table-responsive">
+                        <table class="saas-table" id="exceptions-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã nhân viên</th>
+                                    <th>Họ và tên</th>
+                                    <th>Đơn vị công tác</th>
+                                    <th>Kết quả chi trả</th>
+                                    <th>Căn cứ ngoại lệ</th>
+                                    <th>Mức ưu tiên</th>
+                                    <th>Ngày hiệu lực</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="exceptions-table-body">
+                                <tr><td colspan="8" class="text-center py-4">Đang tải danh sách ngoại lệ...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 9: LỊCH SỬ TRA CỨU (AUDIT TRAIL)     -->
+            <!-- ========================================== -->
+            <section id="view-history" class="page-view hidden">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Nhật ký Tra cứu & Audit Trail</h1>
+                        <p class="page-subtitle">Theo dõi lịch sử truy vấn, đối tượng tìm kiếm, quy tắc áp dụng và thời điểm kiểm tra.</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-outline" onclick="loadAuditHistory()">Làm mới lịch sử</button>
+                    </div>
+                </div>
+
+                <div class="card table-card">
+                    <div class="table-responsive">
+                        <table class="saas-table" id="audit-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã truy vấn (Query ID)</th>
+                                    <th>Người thực hiện</th>
+                                    <th>Từ khóa tìm kiếm</th>
+                                    <th>Đối tượng tìm thấy</th>
+                                    <th>Loại</th>
+                                    <th>Kết quả chi trả</th>
+                                    <th>Quy tắc áp dụng</th>
+                                    <th>Thời điểm</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audit-table-body">
+                                <tr><td colspan="8" class="text-center py-4">Đang tải nhật ký kiểm tra...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 10: HỆ THỐNG & MẠNG LAN               -->
+            <!-- ========================================== -->
+            <section id="view-system" class="page-view hidden">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Thông số Kỹ thuật & Mạng LAN</h1>
+                        <p class="page-subtitle">Thông tin kết nối mạng nội bộ, trạng thái các micro-service và phiên bản hệ thống.</p>
+                    </div>
+                </div>
+
+                <!-- LAN Server Configuration Card -->
+                <div class="card lan-config-card">
+                    <div class="lan-config-header">
+                        <div class="lan-icon">🌐</div>
+                        <div>
+                            <h3>Địa chỉ Máy chủ Mạng Nội bộ (LAN Server)</h3>
+                            <p>Các thiết bị khác trong cùng mạng Wi-Fi/Ethernet có thể truy cập hệ thống qua địa chỉ dưới đây.</p>
+                        </div>
+                    </div>
+                    <div class="lan-address-box">
+                        <code id="lan-full-url">http://192.168.1.100:8000</code>
+                        <button class="btn btn-primary btn-sm" onclick="copyLanAddress()">📋 Sao chép địa chỉ</button>
+                    </div>
+                    <div class="lan-firewall-tips">
+                        <strong>Lưu ý Windows Defender Firewall:</strong>
+                        Nếu thiết bị khác trong mạng LAN không mở được trang, hãy mở cổng <code>8000 TCP</code> trên Windows Firewall (Inbound Rules) của máy chủ chủ trì.
+                    </div>
+                </div>
+
+                <!-- Service Status Grid -->
+                <h3 style="margin: 24px 0 12px; font-size: 15px;">Trạng thái các Thành phần Hệ thống</h3>
+                <div class="services-health-grid" id="services-health-grid">
+                    <div class="service-health-card">
+                        <div class="service-name">FastAPI Web Server</div>
+                        <div class="service-status online">● ONLINE</div>
+                        <div class="service-meta">Uvicorn ASGI • Port 8000</div>
+                    </div>
+                    <div class="service-health-card">
+                        <div class="service-name">SQLite Database</div>
+                        <div class="service-status online">● CONNECTED</div>
+                        <div class="service-meta">ACID Transaction • Indexed</div>
+                    </div>
+                    <div class="service-health-card">
+                        <div class="service-name">GĐ2-03 Search Engine</div>
+                        <div class="service-status online">● READY</div>
+                        <div class="service-meta">Levenshtein • Token Set • Fuzzy</div>
+                    </div>
+                    <div class="service-health-card">
+                        <div class="service-name">GĐ2-03 Rule Engine</div>
+                        <div class="service-status online">● ACTIVE</div>
+                        <div class="service-meta">Deterministic • Priority Fallback</div>
+                    </div>
+                    <div class="service-health-card">
+                        <div class="service-name">GĐ2-01 File Reader / OCR</div>
+                        <div class="service-status online">● READY</div>
+                        <div class="service-meta">CSV, XLSX, DOCX, PDF Scan</div>
+                    </div>
+                    <div class="service-health-card">
+                        <div class="service-name">GĐ2-02 AI Schema Mapping</div>
+                        <div class="service-status online">● ACTIVE</div>
+                        <div class="service-meta">Column Mapping Predictor</div>
+                    </div>
+                </div>
+
+                <!-- Technical Specs Table -->
+                <div class="card" style="margin-top: 24px;">
+                    <h3 style="font-size: 15px; margin-bottom: 12px;">Thông tin Bản quyền & Phiên bản</h3>
+                    <dl class="detail-grid">
+                        <dt>Phiên bản ứng dụng:</dt><dd><code>v1.0.0 (GĐ2-04 Stable Release)</code></dd>
+                        <dt>Cấu trúc dữ liệu:</dt><dd>Data Schema v1 (Clean Architecture)</dd>
+                        <dt>Máy chủ Host:</dt><dd><code id="host-name-val">PC-LEADER</code></dd>
+                        <dt>Quyền truy cập hiện tại:</dt><dd><span class="badge-role admin">ADMINISTRATOR</span></dd>
+                    </dl>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- GLOBAL MODAL: CHI TIẾT ĐỐI TƯỢNG ĐẦY ĐỦ   -->
+<!-- ========================================== -->
+<div id="modal-entity" class="modal-backdrop hidden" onclick="if(event.target===this) closeModal()">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3 id="modal-entity-title">Chi tiết Hồ sơ Đối tượng</h3>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body" id="modal-entity-body">
+            <!-- Render nội dung chi tiết -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal()">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
