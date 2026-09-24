@@ -1235,6 +1235,65 @@ def create_app(
     # GĐ4-02C - Thông tin hệ thống / LAN
     # =========================================================
 
+    @app.post("/api/system/reset", dependencies=[Depends(require_admin)])
+    def api_reset_business_data(payload: Dict[str, Any] = Body(...)):
+        """Reset dữ liệu nghiệp vụ nhưng giữ nguyên tài khoản ADMIN."""
+        confirmation = str(payload.get("confirmation") or "").strip().upper()
+        if confirmation != "RESET":
+            raise HTTPException(
+                status_code=400,
+                detail="Xác nhận reset không hợp lệ.",
+            )
+
+        conn = db.get_connection()
+
+        with db.lock:
+            # Ghi nhận số lượng trước khi xóa để trả về cho giao diện.
+            counts_before = {
+                "employees": conn.execute("SELECT COUNT(*) FROM nhan_vien").fetchone()[0],
+                "units": conn.execute("SELECT COUNT(*) FROM don_vi").fetchone()[0],
+                "source_units": conn.execute("SELECT COUNT(*) FROM don_vi_nguon").fetchone()[0],
+                "rules": conn.execute("SELECT COUNT(*) FROM business_rule").fetchone()[0],
+                "exceptions": conn.execute("SELECT COUNT(*) FROM ngoai_le_ca_nhan").fetchone()[0],
+                "user_accounts": conn.execute(
+                    "SELECT COUNT(*) FROM users WHERE role='USER'"
+                ).fetchone()[0],
+            }
+
+            try:
+                conn.execute("BEGIN")
+
+                # Chỉ xóa session/tài khoản USER do dữ liệu nhân viên sinh ra.
+                # ADMIN và session ADMIN hiện tại được giữ nguyên.
+                conn.execute(
+                    """
+                    DELETE FROM auth_sessions
+                    WHERE user_id IN (SELECT id FROM users WHERE role='USER')
+                    """
+                )
+                conn.execute("DELETE FROM users WHERE role='USER'")
+
+                # Xóa theo thứ tự an toàn với khóa ngoại.
+                conn.execute("DELETE FROM ngoai_le_ca_nhan")
+                conn.execute("DELETE FROM business_rule")
+                conn.execute("DELETE FROM nhan_vien")
+                conn.execute("DELETE FROM don_vi_nguon")
+                conn.execute("DELETE FROM don_vi")
+
+                conn.commit()
+            except Exception:
+                conn.rollback()
+                raise
+
+        # Lịch sử tra cứu chỉ tồn tại trong RAM của phiên server.
+        SEARCH_HISTORY.clear()
+
+        return {
+            "status": "ok",
+            "message": "Đã reset dữ liệu nghiệp vụ. Tài khoản ADMIN được giữ nguyên.",
+            "deleted": counts_before,
+        }
+
     @app.get("/api/system", dependencies=[Depends(require_admin)])
     def api_system():
         lan_ip = "127.0.0.1"

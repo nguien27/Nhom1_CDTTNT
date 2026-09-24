@@ -2550,6 +2550,46 @@ function copyLanAddress() {
     }
 }
 
+async function resetBusinessData() {
+    const confirmed = window.confirm(
+        'Reset toàn bộ dữ liệu nghiệp vụ?\n\n' +
+        'Sẽ xóa: nhân viên, đơn vị, đơn vị nguồn, Business Rule, ngoại lệ, tài khoản USER và session USER.\n' +
+        'Tài khoản ADMIN hiện tại được giữ nguyên.\n\n' +
+        'Thao tác này không thể hoàn tác.'
+    );
+    if (!confirmed) return;
+
+    const typed = window.prompt('Nhập RESET để xác nhận lần cuối:');
+    if (typed !== 'RESET') {
+        showAlert('Đã hủy reset dữ liệu.', 'info');
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/system/reset', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ confirmation: 'RESET' })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            const detail = data.detail?.message || data.detail || data.message || 'Không thể reset dữ liệu.';
+            throw new Error(typeof detail === 'string' ? detail : JSON.stringify(detail));
+        }
+
+        showAlert(data.message || 'Đã reset dữ liệu nghiệp vụ.', 'success');
+        AppState.searchResults = [];
+        AppState.exceptions = [];
+        AppState.rules = [];
+        AppState.stats = {};
+
+        await loadSystemSettings();
+        await loadDashboardStats();
+    } catch (e) {
+        showAlert(e.message || 'Không thể reset dữ liệu.', 'error');
+    }
+}
+
 function closeModal() {
     document.getElementById('modal-entity')?.classList.add('hidden');
 }
